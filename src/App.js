@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
 function App() {
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    fetch('https://geodata-production.up.railway.app/api/v1/cities/all')
+        .then(response => response.json())
+        .then(data => setCities(data))
+        .catch(error => console.error('Ошибка при получении данных:', error));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <h2>Список городов</h2>
+        <table>
+          <thead>
+          <tr>
+              <th>Название</th>
+              <th>Долгота</th>
+              <th>Широта</th>
+          </tr>
+          </thead>
+          <tbody>
+          {cities.map((city, index) => (
+              <tr key={index}>
+                <td>{city.name}</td>
+                <td>{city.latitude}</td>
+                <td>{city.longitude}</td>
+              </tr>
+          ))}
+          </tbody>
+        </table>
+      </div>
   );
 }
 
