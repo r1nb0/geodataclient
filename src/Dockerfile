@@ -1,4 +1,9 @@
-FROM ubuntu:latest
-LABEL authors="limbo"
+FROM node:20-alpine
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /app
+
+COPY . .
+
+RUN npm install
+
+CMD ["npm", "start"]
